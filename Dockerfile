@@ -12,7 +12,7 @@ COPY requirements.txt ./
 RUN pip install --no-cache-dir -r requirements.txt
 
 COPY --chown=pclq:pclq app ./app
-COPY --chown=pclq:pclq data ./data
+RUN mkdir -p /app/data && chown -R pclq:pclq /app/data
 
 USER pclq
 EXPOSE 8000
