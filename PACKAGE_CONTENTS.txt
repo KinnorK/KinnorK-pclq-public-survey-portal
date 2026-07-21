@@ -1,0 +1,14 @@
+README_FIRST_CLOUD.md       First instructions
+UPLOAD_TO_GITHUB.md         Private repository upload steps
+DEPLOY_RENDER.md            Primary deployment procedure
+DEPLOY_RAILWAY.md           Alternative deployment procedure
+CLOUD_ROLE_ACCESS.md        Founder, Analyzer, and participant permissions
+SECURITY_AND_OPERATIONS.md  Security and operational controls
+DATABASE_SCHEMA.md          PostgreSQL table purpose
+ARCHITECTURE.md              Public survey / private portal architecture
+render.yaml                 Render Blueprint
+railway.toml                Railway configuration
+Dockerfile                  Cloud web-service image
+app/                        Complete application source code
+tests/                      Automated test suite
+VERIFICATION_REPORT.md      Tests performed on this package

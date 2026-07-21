@@ -1,0 +1,13 @@
+.env
+.env.*
+!.env.cloud.example
+!.env.local.example
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.venv/
+venv/
+data/*.db
+data/*.sqlite*
+startup_logs/
+*.log

@@ -1,0 +1,2 @@
+PCLQ Cloud Public Deployment 1.0.0
+Built for public HTTPS survey access, private role-based analysis, and managed PostgreSQL storage.

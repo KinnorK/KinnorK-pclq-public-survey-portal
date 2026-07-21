@@ -1,0 +1,31 @@
+PCLQ PUBLIC CLOUD DEPLOYMENT — SHORTEST PATH
+
+WHY THIS UPLOADER IS NEEDED
+GitHub shows "No installed GitHub Apps", so ChatGPT cannot write directly to your repository.
+This package lets your own Windows computer upload the source securely.
+
+STEP 1 — CREATE A TEMPORARY GITHUB TOKEN
+1. Double-click OPEN_GITHUB_TOKEN_PAGE_WINDOWS.bat
+2. Token name: PCLQ temporary uploader
+3. Expiration: 7 days
+4. Repository access: Only selected repositories
+5. Select: pclq-public-survey-portal
+6. Repository permissions -> Contents: Read and write
+7. Generate the token and copy it.
+8. Never paste the token into ChatGPT.
+
+STEP 2 — UPLOAD THE COMPLETE PROJECT
+1. Double-click UPLOAD_TO_GITHUB_WINDOWS.bat
+2. Paste the token when requested. The input is hidden.
+3. Wait for "UPLOAD COMPLETED SUCCESSFULLY".
+4. Delete/revoke the temporary token after the upload.
+
+STEP 3 — OPEN RENDER DEPLOYMENT
+1. Double-click OPEN_RENDER_DEPLOYMENT_WINDOWS.bat
+2. Sign in to Render with GitHub.
+3. Approve access to pclq-public-survey-portal.
+4. Enter private values for FOUNDER_PASSWORD and ANALYST_PASSWORD.
+5. Approve the Blueprint deployment and payment plan.
+
+These last approvals cannot be completed by ChatGPT because they control your passwords,
+billing, cloud account, and research database.

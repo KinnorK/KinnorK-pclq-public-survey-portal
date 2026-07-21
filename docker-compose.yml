@@ -1,0 +1,40 @@
+services:
+  db:
+    image: postgres:17-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: pclq
+      POSTGRES_USER: pclq
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-replace-db-password}
+    volumes:
+      - pclq_postgres:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U pclq -d pclq"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  web:
+    build: .
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      APP_NAME: PCLQ Public Survey and Research Portal
+      SECRET_KEY: ${SECRET_KEY:-replace-with-a-long-random-secret}
+      PUBLIC_BASE_URL: ${PUBLIC_BASE_URL:-http://localhost:8000}
+      APP_TIMEZONE: Asia/Kolkata
+      SESSION_HTTPS_ONLY: ${SESSION_HTTPS_ONLY:-false}
+      DATABASE_URL: postgresql+psycopg://pclq:${POSTGRES_PASSWORD:-replace-db-password}@db:5432/pclq
+      FOUNDER_USERNAME: ${FOUNDER_USERNAME:-admin}
+      FOUNDER_PASSWORD: ${FOUNDER_PASSWORD:-change-me-now}
+      ANALYST_USERNAME: ${ANALYST_USERNAME:-analyst}
+      ANALYST_PASSWORD: ${ANALYST_PASSWORD:-analysis123}
+      MINIMUM_CORE_ITEMS: 16
+      PRORATE_LIKERT_IF_ONE_MISSING: "false"
+    ports:
+      - "8000:8000"
+
+volumes:
+  pclq_postgres:

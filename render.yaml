@@ -1,0 +1,49 @@
+services:
+  - type: web
+    name: pclq-survey-portal
+    runtime: docker
+    plan: starter
+    region: singapore
+    dockerfilePath: ./Dockerfile
+    healthCheckPath: /health
+    envVars:
+      - key: APP_ENV
+        value: production
+      - key: APP_NAME
+        value: PCLQ Public Survey and Research Portal
+      - key: DATABASE_URL
+        fromDatabase:
+          name: pclq-postgres
+          property: connectionString
+      - key: SECRET_KEY
+        generateValue: true
+      - key: APP_TIMEZONE
+        value: Asia/Kolkata
+      - key: SESSION_HTTPS_ONLY
+        value: "true"
+      - key: FOUNDER_USERNAME
+        value: admin
+      - key: FOUNDER_PASSWORD
+        sync: false
+      - key: ANALYST_USERNAME
+        value: analyst
+      - key: ANALYST_PASSWORD
+        sync: false
+      - key: MINIMUM_CORE_ITEMS
+        value: "16"
+      - key: PRORATE_LIKERT_IF_ONE_MISSING
+        value: "false"
+      - key: DB_STARTUP_ATTEMPTS
+        value: "45"
+      - key: DB_STARTUP_DELAY_SECONDS
+        value: "2"
+
+databases:
+  - name: pclq-postgres
+    plan: basic-256mb
+    region: singapore
+    databaseName: pclq
+    user: pclq
+    postgresMajorVersion: "17"
+    diskSizeGB: 5
+    ipAllowList: []
