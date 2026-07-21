@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block title %}Survey Database{% endblock %}
+{% block content %}
+<div class="page-heading"><div><span class="eyebrow">Restricted Database</span><h1>Survey Records</h1><p>Filter by date, time, state, background, and score.</p></div><div class="button-group"><a class="button" href="/portal/export.csv{% if request.url.query %}?{{ request.url.query }}{% endif %}">CSV</a><a class="button" href="/portal/export.xlsx{% if request.url.query %}?{{ request.url.query }}{% endif %}">Excel</a></div></div>
+<form method="get" class="filter-panel">
+  <div class="form-grid four">
+    <label>PCLQ ID<input name="search" value="{{ filters.get('search','') }}" placeholder="PCLQ-MH-2026-0001"></label>
+    <label>From date<input type="date" name="start_date" value="{{ filters.get('start_date','') }}"></label>
+    <label>From time (IST)<input type="time" step="1" name="start_time" value="{{ filters.get('start_time','') }}"></label>
+    <label>To date<input type="date" name="end_date" value="{{ filters.get('end_date','') }}"></label>
+    <label>To time (IST)<input type="time" step="1" name="end_time" value="{{ filters.get('end_time','') }}"></label>
+    <label>State/UT<select name="state" multiple size="4">{% for state in states %}<option value="{{ state }}" {% if state in selected_states %}selected{% endif %}>{{ state }}</option>{% endfor %}</select><small>Ctrl/Cmd-click for several states.</small></label>
+    <label>Academic background<select name="background"><option value="">All</option>{% for option in backgrounds %}<option value="{{ option }}" {% if filters.get('background') == option %}selected{% endif %}>{{ option }}</option>{% endfor %}</select></label>
+    <label>Literacy level<select name="level"><option value="">All</option>{% for option in ['Low','Moderate','High'] %}<option value="{{ option }}" {% if filters.get('level') == option %}selected{% endif %}>{{ option }}</option>{% endfor %}</select></label>
+    <label>Gender<select name="gender"><option value="">All</option>{% for option in genders %}<option value="{{ option }}" {% if filters.get('gender') == option %}selected{% endif %}>{{ option }}</option>{% endfor %}</select></label>
+    <label>Education<select name="education"><option value="">All</option>{% for option in education_options %}<option value="{{ option }}" {% if filters.get('education') == option %}selected{% endif %}>{{ option }}</option>{% endfor %}</select></label>
+    <label>Core score minimum<input type="number" name="core_min" min="0" max="20" value="{{ filters.get('core_min','') }}"></label>
+    <label>Core score maximum<input type="number" name="core_max" min="0" max="20" value="{{ filters.get('core_max','') }}"></label>
+    <label>Risk perception minimum<input type="number" name="risk_min" min="5" max="25" value="{{ filters.get('risk_min','') }}"></label>
+    <label>Risk perception maximum<input type="number" name="risk_max" min="5" max="25" value="{{ filters.get('risk_max','') }}"></label>
+    <label>Screening intention minimum<input type="number" name="screening_min" min="5" max="25" value="{{ filters.get('screening_min','') }}"></label>
+    <label>Screening intention maximum<input type="number" name="screening_max" min="5" max="25" value="{{ filters.get('screening_max','') }}"></label>
+  </div>
+  <div class="button-group"><button class="button primary" type="submit">Apply Filters</button><a class="button ghost" href="/portal/records">Clear</a></div>
+</form>
+<div class="table-wrap data-table"><table><thead><tr><th>PCLQ ID</th><th>Date</th><th>Time (IST)</th><th>State</th><th>Background</th><th>Core</th><th>Risk</th><th>Screening</th><th>Level</th></tr></thead><tbody>{% for record in records %}<tr><td><a href="/portal/records/{{ record.id }}">{{ record.participant_code }}</a></td><td>{{ record.submitted_date_ist }}</td><td>{{ record.submitted_time_ist }}</td><td>{{ record.state_ut }}</td><td>{{ record.academic_background }}</td><td>{{ record.core_score }}</td><td>{{ record.risk_perception_raw }}</td><td>{{ record.screening_intention_raw }}</td><td><span class="pill {{ record.core_level|lower }}">{{ record.core_level }}</span></td></tr>{% else %}<tr><td colspan="9" class="empty">No records match the selected filters.</td></tr>{% endfor %}</tbody></table></div>
+<div class="pagination">{% if page > 1 %}<a class="button" href="?{{ query_without_page }}{% if query_without_page %}&{% endif %}page={{ page-1 }}">Previous</a>{% endif %}<span>Page {{ page }}</span>{% if has_next %}<a class="button" href="?{{ query_without_page }}{% if query_without_page %}&{% endif %}page={{ page+1 }}">Next</a>{% endif %}</div>
+{% endblock %}

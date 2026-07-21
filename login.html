@@ -1,0 +1,5 @@
+{% extends "base.html" %}
+{% block title %}Research Team Login{% endblock %}
+{% block content %}
+<div class="auth-layout"><div><span class="eyebrow">Restricted Portal</span><h1>Founder and Analyzer Login</h1><p>Public respondents do not need an account. This area contains scores, filters, reports, exports, and research records.</p></div><form method="post" action="/login" class="auth-card"><input type="hidden" name="csrf_token" value="{{ csrf_token }}">{% if error %}<div class="alert alert-error">{{ error }}</div>{% endif %}<label>Username<input name="username" autocomplete="username" required></label><label>Password<input type="password" name="password" autocomplete="current-password" required></label><button class="button primary" type="submit">Sign in</button></form></div>
+{% endblock %}

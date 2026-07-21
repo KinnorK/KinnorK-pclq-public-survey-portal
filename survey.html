@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+{% block title %}PCLQ Public Survey{% endblock %}
+{% macro radios(name, options, selected='') -%}
+<div class="choice-grid">
+  {% for option in options %}
+  <label class="choice"><input type="radio" name="{{ name }}" value="{{ option }}" {% if selected|string == option|string %}checked{% endif %} required><span>{{ option }}</span></label>
+  {% endfor %}
+</div>
+{%- endmacro %}
+{% block content %}
+<section class="hero survey-hero">
+  <div><span class="eyebrow">Public Research Questionnaire</span><h1>Pancreatic Cancer Literacy Questionnaire</h1><p>Your responses will be stored securely for approved research analysis. Your score is not shown after submission.</p></div>
+  <div class="privacy-card"><strong>Before you begin</strong><span>Complete all required items.</span><span>No medical diagnosis is provided.</span><span>Your PCLQ ID is generated after submission.</span></div>
+</section>
+<div class="progress-wrap"><div id="progressBar" class="progress-bar"></div></div>
+{% if errors %}<div class="alert alert-error"><strong>Please correct the following:</strong><ul>{% for error in errors %}<li>{{ error }}</li>{% endfor %}</ul></div>{% endif %}
+<form method="post" action="/survey" id="surveyForm" class="survey-form">
+  <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+  <div class="honeypot" aria-hidden="true"><label>Website<input name="website" tabindex="-1" autocomplete="off"></label></div>
+
+  <section class="form-section">
+    <div class="section-heading"><span>A</span><div><h2>Participant Information</h2><p>Used for subgroup and state-wise analysis. This section is not scored.</p></div></div>
+    <div class="form-grid three">
+      <label>Age in completed years *<input type="number" name="age" min="1" max="120" value="{{ old.get('age','') }}" required></label>
+      <label>Gender *<select name="gender" required><option value="">Select</option>{% for option in genders %}<option value="{{ option }}" {% if old.get('gender') == option %}selected{% endif %}>{{ option }}</option>{% endfor %}</select></label>
+      <label>Gender details, when Other<input type="text" name="gender_other" maxlength="120" value="{{ old.get('gender_other','') }}"></label>
+      <label>Highest educational qualification *<select name="education" required><option value="">Select</option>{% for option in education_options %}<option value="{{ option }}" {% if old.get('education') == option %}selected{% endif %}>{{ option }}</option>{% endfor %}</select></label>
+      <label>Qualification details, when Other<input type="text" name="education_other" maxlength="120" value="{{ old.get('education_other','') }}"></label>
+      <label>Academic background *<select name="academic_background" required><option value="">Select</option>{% for option in backgrounds %}<option value="{{ option }}" {% if old.get('academic_background') == option %}selected{% endif %}>{{ option }}</option>{% endfor %}</select></label>
+      <label class="span-2">State/Union Territory of residence *<select name="state_ut" required><option value="">Select State/UT</option>{% for state in states %}<option value="{{ state }}" {% if old.get('state_ut') == state %}selected{% endif %}>{{ state }}</option>{% endfor %}</select></label>
+    </div>
+  </section>
+
+  <section class="form-section">
+    <div class="section-heading"><span>B</span><div><h2>General Pancreatic Cancer Literacy</h2></div></div>
+    <div class="question"><h3>B1. {{ b_questions.B1 }}</h3>{{ radios('B1', yes_no, old.get('B1','')) }}</div>
+    <div class="question"><label><strong>B2. {{ b_questions.B2 }}</strong><select name="B2" required><option value="">Select a response</option>{% for option in b2_options %}<option value="{{ option }}" {% if old.get('B2') == option %}selected{% endif %}>{{ option }}</option>{% endfor %}</select></label></div>
+    <div class="question"><label><strong>B3. {{ b_questions.B3 }}</strong><select name="B3" required><option value="">Select a response</option>{% for option in b3_options %}<option value="{{ option }}" {% if old.get('B3') == option %}selected{% endif %}>{{ option }}</option>{% endfor %}</select></label></div>
+    <div class="question"><h3>B4. {{ b_questions.B4 }}</h3>{{ radios('B4', true_false_dk, old.get('B4','')) }}</div>
+    <div class="question"><h3>B5. {{ b_questions.B5 }}</h3>{{ radios('B5', true_false_dk, old.get('B5','')) }}</div>
+  </section>
+
+  <section class="form-section">
+    <div class="section-heading"><span>C</span><div><h2>Symptom Recognition and Appraisal</h2><p>For each condition, indicate whether it can be associated with pancreatic cancer.</p></div></div>
+    {% for item, label in symptom_questions.items() %}<div class="question"><h3>{{ item|replace('_','.') }}. {{ label }}</h3>{{ radios(item, yes_no_dk, old.get(item,'')) }}</div>{% endfor %}
+    <div class="question"><h3>C2. If you developed persistent or concerning symptoms, what would you most likely do?</h3>{{ radios('C2', c2_options, old.get('C2','')) }}</div>
+  </section>
+
+  <section class="form-section">
+    <div class="section-heading"><span>D</span><div><h2>Genetic-Risk Literacy</h2></div></div>
+    {% for item, label in d_questions.items() %}<div class="question"><h3>{{ item }}. {{ label }}</h3>{{ radios(item, true_false_dk, old.get(item,'')) }}</div>{% endfor %}
+  </section>
+
+  <section class="form-section">
+    <div class="section-heading"><span>E</span><div><h2>Pancreatic Cancer Risk Perception</h2><p>1 = Strongly Disagree · 5 = Strongly Agree</p></div></div>
+    {% for item, label in e_questions.items() %}<div class="question"><h3>{{ item }}. {{ label }}</h3>{{ radios(item, [1,2,3,4,5], old.get(item,'')) }}</div>{% endfor %}
+  </section>
+
+  <section class="form-section">
+    <div class="section-heading"><span>F</span><div><h2>Intentions Toward Genetic Risk Assessment and Risk-Based Screening</h2><p>1 = Strongly Disagree · 5 = Strongly Agree</p></div></div>
+    {% for item, label in f_questions.items() %}<div class="question"><h3>{{ item }}. {{ label }}</h3>{{ radios(item, [1,2,3,4,5], old.get(item,'')) }}</div>{% endfor %}
+  </section>
+
+  <section class="form-section">
+    <div class="section-heading"><span>G</span><div><h2>Pancreatic Cancer Information Sources</h2><p>Select all that apply. This section is not scored.</p></div></div>
+    <div class="check-list">{% for item, label in g_sources.items() %}<label><input type="checkbox" name="{{ item }}" value="1" {% if old.get(item) == '1' %}checked{% endif %}><span>{{ label }}</span></label>{% endfor %}</div>
+    <label>Other source details<input type="text" name="G9_text" maxlength="300" value="{{ old.get('G9_text','') }}"></label>
+  </section>
+
+  <section class="consent-box">
+    <label><input type="checkbox" name="consent" value="yes" required {% if old.get('consent') == 'yes' %}checked{% endif %}><span>I confirm that I have read the study information provided by the research team and voluntarily consent to submit these questionnaire responses for research analysis.</span></label>
+  </section>
+  <div class="submit-row"><button type="submit" class="button primary large">Submit Survey</button><p>After submission, you will receive only your unique PCLQ ID. Results remain restricted to the authorized research team.</p></div>
+</form>
+{% endblock %}
