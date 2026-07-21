@@ -1,0 +1,5 @@
+{% extends "base.html" %}
+{% block title %}Survey Submitted{% endblock %}
+{% block content %}
+<div class="center-card success-card"><div class="success-icon">✓</div><span class="eyebrow">Submission received</span><h1>Thank you for participating</h1><p>Your responses have been sent securely to the PCLQ research database.</p>{% if participant_code %}<div class="id-card"><small>Your PCLQ ID</small><strong>{{ participant_code }}</strong></div>{% endif %}<p class="muted">No score or diagnostic result is displayed to participants. Authorized Founder and Analyzer accounts can review the research results in the private portal.</p><a class="button" href="/survey">Submit another response</a></div>
+{% endblock %}

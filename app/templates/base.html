@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}{{ app_name }}{% endblock %}</title>
+  <link rel="stylesheet" href="{{ url_for('static', path='style.css') }}">
+  <script defer src="{{ url_for('static', path='app.js') }}"></script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="brand"><span class="brand-mark">P</span><div><strong>PCLQ</strong><small>Research Platform</small></div></div>
+    {% if user %}
+    <nav class="nav-links">
+      <a href="/portal">Dashboard</a>
+      <a href="/portal/records">Database</a>
+      {% if user.role == 'founder' %}<a href="/portal/qr">Survey Link & QR</a><a href="/portal/users">Users</a><a href="/portal/audit">Audit</a>{% endif %}
+      <form action="/logout" method="post" class="inline-form">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+        <button class="link-button" type="submit">Sign out</button>
+      </form>
+    </nav>
+    {% else %}
+    <nav class="nav-links"><a href="/survey">Public Survey</a><a href="/login">Team Login</a></nav>
+    {% endif %}
+  </header>
+  {% if user %}<div class="role-strip">Signed in as <strong>{{ user.username }}</strong> · {{ 'Founder' if user.role == 'founder' else 'Analyzer' }}</div>{% endif %}
+  <main class="page-shell">{% block content %}{% endblock %}</main>
+  <footer>Pancreatic Cancer Literacy Questionnaire · Research use only · Not a diagnostic service</footer>
+</body>
+</html>

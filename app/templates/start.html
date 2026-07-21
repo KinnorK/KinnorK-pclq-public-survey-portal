@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block title %}Start · {{ app_name }}{% endblock %}
+{% block content %}
+<section class="auth-layout">
+  <div>
+    <span class="eyebrow">PCLQ Connected Platform</span>
+    <h1>Choose where you want to go</h1>
+    <p>This start page keeps the two addresses clear. Participants use the public survey. The Founder and Analyzer use the private portal.</p>
+    <div class="button-group" style="margin-top:24px">
+      <a class="button primary large" href="/survey">Open Public Survey</a>
+      <a class="button large" href="/login">Founder / Analyzer Login</a>
+    </div>
+  </div>
+  <aside class="panel">
+    <h2>Correct local addresses</h2>
+    <p><strong>Public survey</strong><br><code>{{ survey_url }}</code></p>
+    <p><strong>Private portal</strong><br><code>{{ portal_url }}</code></p>
+    <div class="alert alert-info">A valid address begins with <strong>http://</strong> for local testing or <strong>https://</strong> after public deployment. The software now repairs common protocol typing mistakes automatically.</div>
+  </aside>
+</section>
+{% endblock %}
