@@ -45,5 +45,4 @@ databases:
     databaseName: pclq
     user: pclq
     postgresMajorVersion: "17"
-    diskSizeGB: 1
     ipAllowList: []
