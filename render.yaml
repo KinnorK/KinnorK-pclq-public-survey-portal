@@ -2,7 +2,7 @@ services:
   - type: web
     name: pclq-survey-portal
     runtime: docker
-    plan: starter
+    plan: free
     region: singapore
     dockerfilePath: ./Dockerfile
     healthCheckPath: /health
@@ -40,10 +40,10 @@ services:
 
 databases:
   - name: pclq-postgres
-    plan: basic-256mb
+    plan: free
     region: singapore
     databaseName: pclq
     user: pclq
     postgresMajorVersion: "17"
-    diskSizeGB: 5
+    diskSizeGB: 1
     ipAllowList: []
